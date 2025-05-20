@@ -2,8 +2,8 @@ import { Contract, Provider, cairo, CallData, shortString } from 'starknet';
 
 const hash_provider = new Provider({ network: 'sepolia' });
 
-const classHash = '';
-const contractAddress = '';
+const classHash = '0x02fb78c00722d819cc1e353b0a338a20ddf7114ed3f851abf5eb33d90e9f8ff9';
+const contractAddress = '0x021385b821b1df54d5e98dbcf6e2a166d0d22079bf0bf7ee40cdaee91cd88017';
 const usdcTokenAddress = '0x53b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080';
 const strkTokenAddress = '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d';
 
