@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from datetime import date
 from strategy.standardDeviation import standardDeviation
 from strategy.coVariance import coVariance
+from trader.alertTrader import alertTrader
 from fastapi.middleware.cors import CORSMiddleware
 
 dateCurrent = datetime.now().strftime("%Y_%m_%d")
@@ -52,7 +53,6 @@ def get_crypto_list():
     except Exception as e:
         logger.error(f"Error reading crypto list: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to retrieve crypto list.")
-
 
 def get_symbols_from_file(filepath: str, col_index: int):
     try:
@@ -117,7 +117,10 @@ async def executeAR(request: arRequest):
         else:
             return {"error": "Invalid sector. Choose from 'crypto', 'tsx', or 'sp500'."}
 
-        result = "Success"
+        alert = alertTrader(symbols)
+        await run_in_threadpool(alert.runAverageRebalanceAlert, request.sector, request.email)
+
+        result = "Email with results will be sent to: "+str(request.email)
         return result
     except Exception as e:
         logger.error(f"Error executing strategy AR: {str(e)}")
@@ -137,7 +140,10 @@ async def executeM(request: arRequest):
         else:
             return {"error": "Invalid sector. Choose from 'crypto', 'tsx', or 'sp500'."}
 
-        result = "Success"
+        alert = alertTrader(symbols)
+        await run_in_threadpool(alert.runMomentumAlert, request.sector, request.email)
+
+        result = "Email with results will be sent to: "+str(request.email)
         return result
     except Exception as e:
         logger.error(f"Error executing strategy M: {str(e)}")
